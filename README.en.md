@@ -1,26 +1,26 @@
 # JQueryDOM
-## JQuery的插件，使用对象来管理DOM。
+## A plugin for JQuery, use object to manage DOM.
 
-#### 功能：
-- 优化JQuery增删改查DOM的体验。
-- 使用对象代替HTML字符串来生成HTML DOM对象。
+#### Feature:
+- Optimize JQuery experience of insert DOM.
+- Use object to instead string to generate HTML DOM string or objects.
 
-#### 使用方法：
-- 获取DOM字符串：
+#### How to use:
+- Get the DOM string:
 
-  - 注意：这是简单的获取DOM字符串，无法获取子元素。
+  - Notice: This is simple get DOM string, can't get the children elements.
 
   - ```javascript
     $.getDOMString(`div`,{id:`div`,class:`div`},`This is a DIV.`);
     ```
 
-- 获取JQueryDOM对象：
+- Get the JQueryDOM object:
 
   - ```javascript
     $.getDOMObject(`div`,{id:`div`,class:`div`},`This is a DIV.`);
     ```
 
-- 获取JQueryDOM HTML：
+- Get the JQueryDOM html:
 
   - ```javascript
     $.getHtml(`div`,{id:`div`,class:`div`},`This is a DIV.`);
@@ -28,7 +28,7 @@
 
     
 
-- 插入元素：
+- Insert element:
 
   - ```javascript
     $(`body`).appendDOM(`div`,{id:`div`,class:`div`},`This is a DIV.`);
@@ -38,13 +38,13 @@
     $(`body`).htmlDOM(`div`,{id:`div`,class:`div`},`This is a DIV.`);
     ```
 
-  - 使用数组传递class：
+  - Use array classes:
 
     - ```javascript
       $(`body`).appendDOM(`div`,{id:`div`,class:[`div1`,`div2`]}, `This is a DIV.`);
       ```
 
-- 事件绑定：
+- Events bind:
 
   - ```javascript
     $(`body`).appendDOM(`div`,{
@@ -57,7 +57,7 @@
     },`This is a DIV.`);
     ```
 
-  - 事件绑定中传递数据：
+  - The bind events can also push the data:
 
     - ```javascript
       $(`body`).appendDOM(`div`,{
@@ -73,7 +73,7 @@
       });
       ```
 
-- CSS样式：
+- Styles with JQuery css object struct:
 
   - ```javascript
     $(`body`).appendDOM(`div`,{
@@ -85,9 +85,9 @@
     },`This is a DIV.`);
     ```
 
-- 子元素：
+- Children elements:
 
-  - 可以在一个元素中直接插入多个子元素，并且支持多层子元素。
+  - You can direct insert multi-children in one element, and supports cascade.
 
   - ```javascript
     $(`body`).appendDOM(`div`,{
@@ -118,7 +118,7 @@
     },`This is a DIV.`);
     ```
 
-- 表格元素：
+- Table elements:
 
   - ```javascript
     $(`body`).appendDOM(`table`,{
@@ -139,9 +139,9 @@
     });
     ```
 
-- 在attributes中使用html字段取代dom_html参数显示文本：
+- HTML string in attributes without dom_html param:
 
-  - 注意：attributes中html字段的优先级大于dom_html参数。
+  - Notice: the priority of HTML string in attributes is higher than dom_html param.
 
   - ```javascript
     $(`body`).appendDOM(`div`,{
@@ -157,13 +157,13 @@
     });
     ```
 
-- 插入没有attributes的元素：
+- Insert element without attributes:
 
   - ```javascript
     $(`body`).appendDOM(`div`,`This is a DIV.`);
     ```
 
-- 使用对象参数插入元素：
+- Use object to insert element:
 
   - ```javascript
     $(`body`).appendDOM({
@@ -182,7 +182,7 @@
     });
     ```
 
-- 批量插入多个元素：
+- Batch insert elements:
 
   - ```javascript
     $(`body`).appendDOM([
