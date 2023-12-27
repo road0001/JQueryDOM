@@ -33,12 +33,12 @@
 - 语法与JQuery相同，只是在append、prepend、before、after、html后面添加“DOM”。下面仅使用appendDOM作为示例。
 
 - ```javascript
-$(`body`).appendDOM(dom_tag, dom_attr, dom_html);
-$(`body`).prependDOM(dom_tag, dom_attr, dom_html);
-$(`body`).beforeDOM(dom_tag, dom_attr, dom_html);
-$(`body`).afterDOM(dom_tag, dom_attr, dom_html);
-$(`body`).htmlDOM(dom_tag, dom_attr, dom_html);
-// 示例：
+  $(`body`).appendDOM(dom_tag, dom_attr, dom_html);
+  $(`body`).prependDOM(dom_tag, dom_attr, dom_html);
+  $(`body`).beforeDOM(dom_tag, dom_attr, dom_html);
+  $(`body`).afterDOM(dom_tag, dom_attr, dom_html);
+  $(`body`).htmlDOM(dom_tag, dom_attr, dom_html);
+  // 示例：
   $(`body`).appendDOM(`div`,{id:`div`,class:`div`},`This is a DIV.`);
   $(`body`).prependDOM(`div`,{id:`div`,class:`div`},`This is a DIV.`);
   $(`body`).beforeDOM(`div`,{id:`div`,class:`div`},`This is a DIV.`);
