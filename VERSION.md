@@ -1,4 +1,9 @@
 # JQuery DOM
+- Version: 1.0.9 Build 20231227
+	- 将getHtml更名为getDOMHtml。
+	- 加入表格使用tr替代tbody功能。
+	- 加入dom_tag和dom_attr单层对象写法。
+	- 更新文档。
 - Version: 1.0.8 Build 20231222
 	- 加入获取生成的HTML功能。
 - Version: 1.0.7 Build 20230606
