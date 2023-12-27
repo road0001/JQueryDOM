@@ -70,6 +70,7 @@
   	},
   }
   });
+  ```
 
 - 上述事件绑定可简写为如下形式：
 
@@ -123,6 +124,8 @@
 
 - 可以在一个元素中直接插入多个子元素，并且支持多层子元素。同时也可以直接在子元素中绑定事件、CSS。
 
+- 子元素的tag、attr、html分别对应dom_tag、dom_attr、dom_html。
+
 - ```javascript
   $(`body`).appendDOM(`div`,{
       id:`div`,class:[`div`,`div2`],
@@ -155,6 +158,7 @@
 ##### 表格元素
 
 - 表格元素拥有特殊的语法，顶层使用tbody或tr取代children，tr中使用td取代children，并且可省略tag。
+
 - ```javascript
   $(`body`).appendDOM(`table`,{
       id:`testTable`,class:`testTable`,tbody:[
@@ -173,6 +177,30 @@
       ],
   });
   ```
+  
+- 注意：td内的元素隐含tag为td，因此不可使用其他tag取代。td内元素应写为如下形式：
+
+- ```javascript
+  $(`body`).appendDOM(`table`,{
+      id:`testTable`,class:`testTable`,tbody:[
+          {attr:{id:`tr1`,class:`tr1`},td:[
+              {attr:{id:`td1`,class:`td1`,children:[
+				{attr:{id:`tdiv1`,class:`tdiv1`},html:`test td div`},
+			  ]}},
+              {attr:{},html:`test td 2`},
+              {html:`test td 3`},
+              `test td 4`,
+          ]},
+          {td:[
+              {attr:{id:`td1`,class:`td1`,html:`test td 31`}},
+              {attr:{id:`td2`,class:`td2`},html:`test td 32`},
+              {html:`test td 33`},
+              `test td 34`,
+          ]},
+      ],
+  });
+  ```
+
 - 可用tr替代tbody。
 
 - 支持单层对象写法。
@@ -182,7 +210,9 @@
   	    id:`testTable`,class:`testTable`,tr:[
   	        {id:`tr1`,class:`tr1`,td:[
   	            {id:`td1`,class:`td1`,html:`test td 1`},
-  	            {id:`td2`,class:`td2`,html:`test td 2`},
+  	            {children:[
+					{id:`tdiv1`,class:`tdiv1`,html:`test td div`},
+				]},
   	            {html:`test td 3`},
   	            `test td 4`,
   	        ]},
