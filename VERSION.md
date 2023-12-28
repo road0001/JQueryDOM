@@ -1,4 +1,7 @@
 # JQuery DOM
+- Version: 1.0.9 Build 20231228
+	- 将$更名为jQuery以适配更多场合。
+	- 加入原生getDOMHtml功能。
 - Version: 1.0.9 Build 20231227
 	- 将getHtml更名为getDOMHtml。
 	- 加入表格使用tr替代tbody功能。

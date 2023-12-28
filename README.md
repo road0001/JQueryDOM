@@ -22,11 +22,22 @@
 
 #### 获取JQueryDOM HTML
 
+- 此方法仅为获取HTML字符串，无法绑定事件。
+
 - ```javascript
   $.getDOMHtml(`div`,{id:`div`,class:`div`},`This is a DIV.`);
   $.getHtml(`div`,{id:`div`,class:`div`},`This is a DIV.`);
   ```
 
+#### 原生方式获取JQueryDOM HTML
+
+- 需引入html.dom.js脚本。
+
+- 此方法仅为获取HTML字符串，无法绑定事件。
+
+- ```javascript
+  getDOMHtml(`div`,{id:`div`,class:`div`},`This is a DIV.`);
+  ```
 
 #### 插入元素
 
@@ -159,18 +170,22 @@
 
 - 表格元素拥有特殊的语法，顶层使用tbody或tr取代children，tr中使用td取代children，并且可省略tag。
 
+- 表格只建议使用单层对象写法。
+
+- 可用tbody替代tr。
+
 - ```javascript
   $(`body`).appendDOM(`table`,{
-      id:`testTable`,class:`testTable`,tbody:[
-          {attr:{id:`tr1`,class:`tr1`},td:[
-              {attr:{id:`td1`,class:`td1`,html:`test td 1`}},
-              {attr:{id:`td2`,class:`td2`},html:`test td 2`},
+      id:`testTable`,class:`testTable`,tr:[
+          {id:`tr1`,class:`tr1`,td:[
+              {id:`td1`,class:`td1`,html:`test td 1`},
+              {id:`td2`,class:`td2`,html:`test td 2`},
               {html:`test td 3`},
               `test td 4`,
           ]},
           {td:[
-              {attr:{id:`td1`,class:`td1`,html:`test td 31`}},
-              {attr:{id:`td2`,class:`td2`},html:`test td 32`},
+              {id:`td1`,class:`td1`,html:`test td 31`},
+              {id:`td2`,class:`td2`,html:`test td 32`},
               {html:`test td 33`},
               `test td 34`,
           ]},
@@ -182,18 +197,18 @@
 
 - ```javascript
   $(`body`).appendDOM(`table`,{
-      id:`testTable`,class:`testTable`,tbody:[
-          {attr:{id:`tr1`,class:`tr1`},td:[
-              {attr:{id:`td1`,class:`td1`,children:[
-				{attr:{id:`tdiv1`,class:`tdiv1`},html:`test td div`},
-			  ]}},
-              {attr:{},html:`test td 2`},
+      id:`testTable`,class:`testTable`,tr:[
+          {id:`tr1`,class:`tr1`,td:[
+              {id:`td1`,class:`td1`,children:[
+				{tag:`div`,attr:{id:`tdiv1`,class:`tdiv1`},html:`test td div`},
+			  ]},
+              {html:`test td 2`},
               {html:`test td 3`},
               `test td 4`,
           ]},
           {td:[
-              {attr:{id:`td1`,class:`td1`,html:`test td 31`}},
-              {attr:{id:`td2`,class:`td2`},html:`test td 32`},
+              {id:`td1`,class:`td1`,html:`test td 31`},
+              {id:`td2`,class:`td2`,html:`test td 32`},
               {html:`test td 33`},
               `test td 34`,
           ]},
@@ -201,30 +216,9 @@
   });
   ```
 
-- 可用tr替代tbody。
-
-- 支持单层对象写法。
+- 对象参数写法：
 
   - ```javascript
-  	$(`body`).appendDOM(`table`,{
-  	    id:`testTable`,class:`testTable`,tr:[
-  	        {id:`tr1`,class:`tr1`,td:[
-  	            {id:`td1`,class:`td1`,html:`test td 1`},
-  	            {children:[
-					{id:`tdiv1`,class:`tdiv1`,html:`test td div`},
-				]},
-  	            {html:`test td 3`},
-  	            `test td 4`,
-  	        ]},
-  	        {td:[
-  	            {id:`td1`,class:`td1`,html:`test td 31`},
-  	            {id:`td2`,class:`td2`,html:`test td 32`},
-  	            {html:`test td 33`},
-  	            `test td 34`,
-  	        ]},
-  	    ],
-  	});
-  	// 对象参数写法：
   	$(`body`).appendDOM({
   	    tag:`table`,id:`testTable`,class:`testTable`,tr:[
   	        {id:`tr1`,class:`tr1`,td:[
