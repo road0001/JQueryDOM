@@ -1,4 +1,4 @@
-getDOMHtml=function(dom_tag,dom_attr,dom_html){
+getDOMHtml=DOMHtml=function(dom_tag,dom_attr,dom_html){
 	let domFullHtml=[];
 	//dom_tag为数组时，批量为母元素添加元素
 	if(typeof dom_tag==`object` && dom_tag.length!=undefined){
@@ -31,6 +31,7 @@ getDOMHtml=function(dom_tag,dom_attr,dom_html){
 					for(let origin in dom_attr_fix_replace){
 						key_fix=key_fix.replace(origin,dom_attr_fix_replace[origin]);
 					}
+					key_fix=`${key_fix.replace(/([A-Z])/g,"-$1").toLowerCase()}`;
 					dom_attr_fix[key_fix]=dom_tag[key];
 				}
 			}

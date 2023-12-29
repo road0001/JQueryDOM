@@ -35,7 +35,7 @@ if(typeof jQuery===`function`){
 			dom_html=``;
 		}
 	
-		let dom_attr_string=``;
+		let dom_attr_string=[];
 	
 		//dom_attr is string, it will be the inner html, without attributes.
 		if(typeof dom_attr==`string`){
@@ -77,7 +77,7 @@ if(typeof jQuery===`function`){
 	
 					//cur_dom_attr为undefined、null时，不插入此属性
 					if(cur_dom_attr!=undefined && cur_dom_attr!=null && allow_insert_attr){
-						dom_attr_string+=` ${key}="${cur_dom_attr}"`;
+						dom_attr_string.push(`${key.replace(/([A-Z])/g,"-$1").toLowerCase()}="${cur_dom_attr}"`);
 					}
 				}
 			}
@@ -87,10 +87,36 @@ if(typeof jQuery===`function`){
 			return `${dom_html}`;
 		}
 		
-		return `<${dom_tag}${dom_attr_string}>${dom_html}</${dom_tag}>`;
+		return `<${dom_tag} ${dom_attr_string.join(` `)}>${dom_html}</${dom_tag}>`;
 	}
-	
-	jQuery.getDOMObject=function(dom_tag,dom_attr,dom_html){
+
+	jQuery.getDOMObject=function(dom_tag,dom_attr,dom_html, attach_type){
+		//dom_tag为对象时，和普通情况一样
+		if(typeof dom_tag==`object` && dom_tag.length==undefined){
+			let dom_attr_fix_blacklist=[
+				`tag`,`attachType`,
+			]
+			let dom_attr_fix_replace={
+				tagName:`tag`, attrName:`attr`,
+			}
+			let dom_attr_fix={};
+			if(dom_tag.attr==undefined){
+				for(let key in dom_tag){
+					if(!dom_attr_fix_blacklist.includes(key)){
+						let key_fix=key;
+						for(let origin in dom_attr_fix_replace){
+							key_fix=key_fix.replace(origin,dom_attr_fix_replace[origin]);
+						}
+						dom_attr_fix[key_fix]=dom_tag[key];
+					}
+				}
+			}
+			dom_attr=dom_tag.attr || dom_attr_fix;
+			dom_html=dom_tag.html;
+			attach_type=dom_tag.attachType || attach_type;
+			dom_tag=dom_tag.tag;
+		}
+
 		try{
 			let domObject=jQuery(jQuery.getDOMString(dom_tag, dom_attr, dom_html));
 			if(typeof dom_attr==`object`){
@@ -166,7 +192,7 @@ if(typeof jQuery===`function`){
 								...dom_attr.children,
 							}
 							// domObject.attachDOM(children.tag,children.attr,children.html,children.attachType);
-							domObject.attachDOM(children);
+							domObject.append(jQuery.getDOMObject(children));
 						}else{
 							/*多个子项时，采用数组形式
 							[
@@ -185,7 +211,7 @@ if(typeof jQuery===`function`){
 									...dom_attr.children[i],
 								}
 								// domObject.attachDOM(children.tag,children.attr,children.html,children.attachType);
-								domObject.attachDOM(children);
+								domObject.append(jQuery.getDOMObject(children));
 							}
 						}
 					}
@@ -202,6 +228,7 @@ if(typeof jQuery===`function`){
 						let default_td={
 							tag:`td`,attr:undefined,html:undefined,children:[],attachType:`append`
 						}
+						let trDomObject;
 						let trList=dom_attr.tbody || dom_attr.tr;
 						for(let i=0; i<trList.length; i++){
 							let curTr=trList[i];
@@ -210,7 +237,7 @@ if(typeof jQuery===`function`){
 								...curTr
 							}
 							// let trDomObject=domObject.attachDOM(tr.tag,tr.attr,tr.html,tr.attachType);
-							let trDomObject=domObject.attachDOM(tr);
+							trDomObject=jQuery.getDOMObject(tr);
 							for(let j=0; j<curTr.td.length; j++){
 								let curTd=curTr.td[j];
 								if(typeof curTd==`string`){
@@ -221,10 +248,10 @@ if(typeof jQuery===`function`){
 									...curTd,
 								}
 								// trDomObject.attachDOM(td.tag,td.attr,td.html,td.attachType);
-								trDomObject.attachDOM(td);
+								trDomObject.append(jQuery.getDOMObject(td));
 							}
+							domObject.append(trDomObject);
 						}
-						
 					}
 				}catch(e){
 					console.error(e);
@@ -251,32 +278,6 @@ if(typeof jQuery===`function`){
 				this.attachDOM(cur);
 			}
 			return;
-		}
-
-		//dom_tag为对象时，和普通情况一样
-		if(typeof dom_tag==`object` && dom_tag.length==undefined){
-			let dom_attr_fix_blacklist=[
-				`tag`,`attachType`,
-			]
-			let dom_attr_fix_replace={
-				tagName:`tag`, attrName:`attr`,
-			}
-			let dom_attr_fix={};
-			if(dom_tag.attr==undefined){
-				for(let key in dom_tag){
-					if(!dom_attr_fix_blacklist.includes(key)){
-						let key_fix=key;
-						for(let origin in dom_attr_fix_replace){
-							key_fix=key_fix.replace(origin,dom_attr_fix_replace[origin]);
-						}
-						dom_attr_fix[key_fix]=dom_tag[key];
-					}
-				}
-			}
-			dom_attr=dom_tag.attr || dom_attr_fix;
-			dom_html=dom_tag.html;
-			attach_type=dom_tag.attachType || attach_type;
-			dom_tag=dom_tag.tag;
 		}
 
 		let domObject=jQuery.getDOMObject(dom_tag, dom_attr, dom_html);

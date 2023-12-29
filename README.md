@@ -358,4 +358,74 @@
     });
     ```
 
-    
+
+##### 为其他框架提供模板（DOMHtml）
+
+- 在不依赖JQuery的情况下，仅需要引入html.dom.js即可。
+
+- 例：使用DOMHtml为vue提供模板
+
+  - 注意：
+    1. PascalCase写法将自动转换为kebab-case。
+    2. 所有的「v-」开头的key必须加引号。
+    3. 带有「:」的key必须加引号。
+    4. 不可使用带有@的key，必须改成「v-on:」或「vOn」。
+
+- ```javascript
+  export default {
+  	props: {
+  		msg: String,
+  		vtdiv: Boolean,
+  		vtshow: Boolean,
+  		vtbu: Boolean,
+  		vtbus: Array,
+  	},
+  	methods: {
+  		vbutest(d) {
+  			console.log(d);
+  		}
+  	},
+  	template: DOMHtml(
+  		[
+  			{
+  				tag: `div`,id: `div1`,class: `div`,html: `{{msg}}`,
+  				':class': `vtdiv`,vIf: `vtshow`,
+  				children: [{
+  						tag: `div`,'v-for': `(bu, index) in vtbus`,
+  						children: [{
+  							tag: `button`,
+							class: `vbutton`,
+							html: `{{index}}: {{bu.name}}`,
+  							'vBind:id': `'button_' + index`,
+							':class': `vtbu`,
+							'v-if': `index % 2 == 0`,
+  							'vOn:click': `
+								vbutest(bu.shit); 
+								this.$parent.vbutest(bu.name)
+							`
+  						}, ]
+  					},
+  					{
+  						tag: `button`,
+						class: `vbutton`,
+						html: `{{index}}: {{bu.name}}`,
+  						'vBind:id': `'button_' + index`,
+						':class': `vtbu`,
+						'v-for': `(bu, index) in vtbus`,
+  						'vOn:click': `
+							vbutest(bu.shit); 
+							this.$parent.vbutest(bu.name)
+						`
+  					},
+  				]
+  			},
+  			{
+  				tag: `div`,id: `div1`,class: `div`,html: `{{msg}}`,
+  				':class': `vtdiv`,vIf: `vtshow`,
+  			},
+  		]
+  	),
+  }
+  ```
+
+  

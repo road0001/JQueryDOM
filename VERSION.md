@@ -1,4 +1,7 @@
 # JQuery DOM
+- Version: 1.1.0 Build 20231229
+	- 加入attribute PascalCase→kebab-case转换。
+	- 优化DOM插入性能。
 - Version: 1.0.9 Build 20231228
 	- 将$更名为jQuery以适配更多场合。
 	- 加入原生getDOMHtml功能。
