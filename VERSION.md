@@ -1,4 +1,6 @@
 # JQuery DOM
+- Version: 1.1.1 Build 20240104
+	- 修复数组形式插入DOM时无法插入的bug。
 - Version: 1.1.0 Build 20231229
 	- 加入attribute PascalCase→kebab-case转换。
 	- 优化DOM插入性能。

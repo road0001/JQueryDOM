@@ -275,7 +275,7 @@ if(typeof jQuery===`function`){
 					...JSON.parse(JSON.stringify(default_children)),
 					...cur,
 				}
-				this.attachDOM(cur);
+				this.attachDOM(cur,undefined,undefined,attach_type);
 			}
 			return;
 		}
