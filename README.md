@@ -366,10 +366,18 @@
 - 例：使用DOMHtml为vue提供模板
 
   - 注意：
-    1. PascalCase写法将自动转换为kebab-case。
-    2. 所有的「v-」开头的key必须加引号。
-    3. 带有「:」的key必须加引号。
-    4. 不可使用带有@的key，必须改成「v-on:」或「vOn」。
+    1. camelCase写法（如vIf、vBindAttr、vFor、vModel、vOnClick等）将自动转换为Vue标准的写法（v-bind:attr、v-on:click等）。
+	2. 使用Vattr或VAttr的写法（attr前面加大写的V）来替代「:attr」。
+    3. 所有的「v-」开头的key必须加引号。
+    4. 带有「:」的key必须加引号。
+    5. 不可使用带有@的key，必须改成「v-on:」或「vOn」。
+	6. 为了方便Vue中Attribute绑定时的变量引用，引用变量可采用如下形式：
+	  - Text1{{index}}Text2
+	    - 上述字符串会被自动转换为「\`Text1${index}Text2\`」。
+		- 表达式中字符串的部分必须加空格以分隔，如：
+		  - 「Text1{{index}} == Text2{{index}}」会被转换为：
+		  - 「\`Text1${index}\` == \`Text2${index}\`」
+		- 字符串中若需要用到空格，应用「\&nbsp;」替代，如：「Text1&nbsp;{{index}}」→「\`Text1 ${index}\`」。
 
 - ```javascript
   export default {
@@ -388,15 +396,15 @@
   	template: DOMHtml(
   		[
   			{
-  				tag: `div`,id: `div1`,class: `div`,html: `{{msg}}`,
-  				':class': `vtdiv`,vIf: `vtshow`,
+  				tag: `div`,id: `div1`, class: `div`,html: `{{msg}}`,
+  				Vclass: `{vtdiv:vtshow}`, vIf: `vtshow`,
   				children: [{
   						tag: `div`,'v-for': `(bu, index) in vtbus`,
   						children: [{
   							tag: `button`,
 							class: `vbutton`,
 							html: `{{index}}: {{bu.name}}`,
-  							'vBind:id': `'button_' + index`,
+  							'vBind:id': `button_{{index}}`,
 							':class': `vtbu`,
 							'v-if': `index % 2 == 0`,
   							'vOn:click': `
@@ -409,10 +417,10 @@
   						tag: `button`,
 						class: `vbutton`,
 						html: `{{index}}: {{bu.name}}`,
-  						'vBind:id': `'button_' + index`,
-						':class': `vtbu`,
-						'v-for': `(bu, index) in vtbus`,
-  						'vOn:click': `
+  						Vid: `'button_' + index`,
+						vBindClass: `vtbu`,
+						vFor: `(bu, index) in vtbus`,
+  						vOnClick: `
 							vbutest(bu.shit); 
 							this.$parent.vbutest(bu.name)
 						`

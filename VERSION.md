@@ -1,4 +1,6 @@
 # JQuery DOM
+- Version: 1.1.1 Build 20240105
+	- 加入vueDOMHtml功能。
 - Version: 1.1.1 Build 20240104
 	- 修复数组形式插入DOM时无法插入的bug。
 - Version: 1.1.0 Build 20231229
