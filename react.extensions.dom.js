@@ -27,14 +27,16 @@ function reactDOMHtml(dom_tag,dom_attr,dom_html,dom_html_after){
 		`tag`,`html`,`htmlAfter`,
 	]
 	let dom_attr_fix_replace={
-		tagName:`tag`, attrName:`attr`, class:`className`, classNameName:`className`, for:`htmlFor`,
+		tagName:`tag`, attrName:`attr`, class:`className`, for:`htmlFor`,
 	}
 	let dom_attr_fix={};
 	for(let key in dom_attr){
 		if(!dom_attr_fix_blacklist.includes(key)){
 			let key_fix=key;
 			for(let origin in dom_attr_fix_replace){
-				key_fix=key_fix.replace(origin,dom_attr_fix_replace[origin]);
+				if(origin == key_fix){
+					key_fix=key_fix.replace(origin,dom_attr_fix_replace[origin]);
+				}
 			}
 			dom_attr_fix[key_fix]=dom_attr[key];
 		}
