@@ -6,6 +6,7 @@
 - 使用对象代替HTML字符串来生成HTML DOM对象。
 
 ### 使用方法
+
 #### 获取DOM字符串
 
 - 注意：这是简单的获取DOM字符串，无法获取子元素。
@@ -29,7 +30,7 @@
   $.getHtml(`div`,{id:`div`,class:`div`},`This is a DIV.`);
   ```
 
-#### 原生方式获取JQueryDOM HTML
+#### 原生方式获取DOMHtml
 
 - 需引入html.dom.js脚本。
 
@@ -38,6 +39,10 @@
 - ```javascript
   getDOMHtml(`div`,{id:`div`,class:`div`},`This is a DIV.`);
   ```
+
+##### 为其他框架提供模板（DOMHtml）
+
+- 使用vueDOMHtml、reactDOMHtml为Vue、React等框架提供模板。您可以阅读更加详细的文档：[README.vue.md](./README.vue.md)、[README.react.md](./README.react.md)。
 
 #### 插入元素
 
@@ -357,83 +362,3 @@
         ]
     });
     ```
-
-
-##### 为其他框架提供模板（DOMHtml）
-
-- 在不依赖JQuery的情况下，仅需要引入html.dom.js即可。
-
-- 例：使用DOMHtml为vue提供模板
-
-  - 注意：
-    1. camelCase写法（如vIf、vBindAttr、vFor、vModel、vOnClick等）将自动转换为Vue标准的写法（v-bind:attr、v-on:click等）。
-	2. 使用Vattr或VAttr的写法（attr前面加大写的V）来替代「:attr」。
-    3. 所有的「v-」开头的key必须加引号。
-    4. 带有「:」的key必须加引号。
-    5. 不可使用带有@的key，必须改成「v-on:」或「vOn」。
-	6. 为了方便Vue中Attribute绑定时的变量引用，引用变量可采用如下形式：
-	  - Text1{{index}}Text2
-	    - 上述字符串会被自动转换为「\`Text1${index}Text2\`」。
-		- 表达式中字符串的部分必须加空格以分隔，如：
-		  - 「Text1{{index}} == Text2{{index}}」会被转换为：
-		  - 「\`Text1${index}\` == \`Text2${index}\`」
-		- 字符串中若需要用到空格，应用「\&nbsp;」替代，如：「Text1&nbsp;{{index}}」→「\`Text1 ${index}\`」。
-
-- ```javascript
-  export default {
-  	props: {
-  		msg: String,
-  		vtdiv: Boolean,
-  		vtshow: Boolean,
-  		vtbu: Boolean,
-  		vtbus: Array,
-  	},
-  	methods: {
-  		vbutest(d) {
-  			console.log(d);
-  		}
-  	},
-  	template: DOMHtml(
-  		[
-  			{
-  				tag: `div`,id: `div1`, class: `div`,html: `{{msg}}`,
-  				Vclass: `{vtdiv:vtshow}`, vIf: `vtshow`,
-  				children: [{
-  						tag: `div`,'v-for': `(bu, index) in vtbus`,
-  						children: [{
-  							tag: `button`,
-							class: `vbutton`,
-							html: `{{index}}: {{bu.name}}`,
-  							'vBind:id': `button_{{index}}`,
-							':class': `vtbu`,
-							'v-if': `index % 2 == 0`,
-  							'vOn:click': `
-								vbutest(bu.shit); 
-								this.$parent.vbutest(bu.name)
-							`
-  						}, ]
-  					},
-  					{
-  						tag: `button`,
-						class: `vbutton`,
-						html: `{{index}}: {{bu.name}}`,
-  						Vid: `'button_' + index`,
-						vBindClass: `vtbu`,
-						vFor: `(bu, index) in vtbus`,
-  						vOnClick: `
-							vbutest(bu.shit); 
-							this.$parent.vbutest(bu.name)
-						`
-  					},
-  				]
-  			},
-  			{
-  				tag: `div`,id: `div1`,class: `div`,html: `{{msg}}`,
-  				':class': `vtdiv`,vIf: `vtshow`,
-  			},
-  		]
-  	),
-  }
-  ```
-
-  

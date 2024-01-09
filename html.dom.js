@@ -41,65 +41,65 @@ getDOMHtml=DOMHtml=function(dom_tag,dom_attr,dom_html,dom_fix={}){
 	//dom_tag为对象时，和普通情况一样
 	if(typeof dom_tag==`object` && dom_tag.length==undefined){
 		dom_tag=JSON.parse(JSON.stringify(dom_tag));
-		let dom_attr_fix_blacklist=[
-			`tag`,`attachType`,
-		]
-		let dom_attr_fix_replace={
-			...{tagName:`tag`, attrName:`attr`},
-			...dom_fix.attr,
-		}
-		let dom_attr_value_fix_keywords=[
-			...dom_fix.attrKeywords,
-		]
-		let dom_attr_value_fix_replace=[
-			...dom_fix.attrValue,
-		]
-		let dom_attr_fix={};
-		if(dom_tag.attr==undefined){
-			for(let key in dom_tag){
-				if(!dom_attr_fix_blacklist.includes(key)){
-					let key_fix=key;
-					let val_fix=dom_tag[key];
-					for(let origin in dom_attr_fix_replace){
-						key_fix=key_fix.replace(origin,dom_attr_fix_replace[origin]);
-					}
-					if(!key_fix.includes(`:`)){
-						key_fix=key_fix.toKebabCase();
-					}else{
-						key_fix=key_fix.toLowerCase();
-					}
-
-					for(let rep of dom_attr_value_fix_replace){
-						for(let fk of dom_attr_value_fix_keywords){
-							if(key_fix.includes(fk) && key_fix!=`tag` && key_fix!=`html`){
-								// if(rep.origin==generalStrSymbol){
-								if(typeof rep.origin!=`string`){
-									let val_fix_match=val_fix.match(rep.origin);
-									if(val_fix_match){
-										for(let m of val_fix_match){
-											val_fix=val_fix.replace(m, rep.target.replaceAll(generalStrSymbol,m));
-										}
-									}
-									// val_fix=val_fix.replace(rep.origin,rep.target.replace(generalStrSymbol,val_fix));
-									// val_fix=rep.target.replace(generalStrSymbol,val_fix);
-									// if(!val_fix.includes(rep.target.split(generalStrSymbol)[0]) && !val_fix.includes(rep.target.split(generalStrSymbol)[1])){
-									// 	val_fix=rep.target.replace(generalStrSymbol,val_fix);
-									// }
-								}else{
-									val_fix=val_fix.replaceAll(rep.origin,rep.target);
-								}
-							}
-						}
-						
-					}
-					dom_attr_fix[key_fix]=val_fix;
-				}
-			}
-		}
-		dom_attr=dom_tag.attr || dom_attr_fix;
+		dom_attr=dom_tag.attr || dom_tag;
 		dom_html=dom_attr.html || dom_tag.html;
 		dom_tag=dom_tag.tag;
 	}
+
+	let dom_attr_fix_blacklist=[
+		`tag`,`attachType`,
+	]
+	let dom_attr_fix_replace={
+		...{tagName:`tag`, attrName:`attr`},
+		...dom_fix.attr,
+	}
+	let dom_attr_value_fix_keywords=[
+		...dom_fix.attrKeywords,
+	]
+	let dom_attr_value_fix_replace=[
+		...dom_fix.attrValue,
+	]
+	let dom_attr_fix={};
+	for(let key in dom_attr){
+		if(!dom_attr_fix_blacklist.includes(key)){
+			let key_fix=key;
+			let val_fix=dom_attr[key];
+			for(let origin in dom_attr_fix_replace){
+				key_fix=key_fix.replace(origin,dom_attr_fix_replace[origin]);
+			}
+			if(!key_fix.includes(`:`)){
+				key_fix=key_fix.toKebabCase();
+			}else{
+				key_fix=key_fix.toLowerCase();
+			}
+
+			for(let rep of dom_attr_value_fix_replace){
+				for(let fk of dom_attr_value_fix_keywords){
+					if(key_fix.includes(fk) && key_fix!=`tag` && key_fix!=`html`){
+						// if(rep.origin==generalStrSymbol){
+						if(typeof rep.origin!=`string`){
+							let val_fix_match=val_fix.match(rep.origin);
+							if(val_fix_match){
+								for(let m of val_fix_match){
+									val_fix=val_fix.replace(m, rep.target.replaceAll(generalStrSymbol,m));
+								}
+							}
+							// val_fix=val_fix.replace(rep.origin,rep.target.replace(generalStrSymbol,val_fix));
+							// val_fix=rep.target.replace(generalStrSymbol,val_fix);
+							// if(!val_fix.includes(rep.target.split(generalStrSymbol)[0]) && !val_fix.includes(rep.target.split(generalStrSymbol)[1])){
+							// 	val_fix=rep.target.replace(generalStrSymbol,val_fix);
+							// }
+						}else{
+							val_fix=val_fix.replaceAll(rep.origin,rep.target);
+						}
+					}
+				}
+				
+			}
+			dom_attr_fix[key_fix]=val_fix;
+		}
+	}
+	dom_attr=dom_attr_fix;
 
 	dom_tag=dom_tag.toKebabCase();
 	if(typeof dom_attr==`object`){
@@ -202,25 +202,4 @@ getDOMHtml=DOMHtml=function(dom_tag,dom_attr,dom_html,dom_fix={}){
 
 	domElement.innerHTML=domFullHtml.join(``);
 	return domElement.outerHTML;
-}
-
-vueDOMHtml=vHtml=function(dom_tag,dom_attr,dom_html){
-	let vueFix={
-		attr:{
-			// vBind:`v-bind:`,
-			vOn:`v-on:`,
-			'@':`v-on:`,
-			V:`:`,
-		},
-		attrKeywords:[
-			`v-bind`,`V`,`:`,`v-if`,`v-else-if`,`v-else`,`v-show`,`v-for`,`v-model`,`v-on`,`@`,`v-html`,
-		],
-		attrValue:[
-			{origin:/\S*{{2}\S*}{2}\S*/g,target:`\`${generalStrSymbol}\``}, //*%*为通配符
-			{origin:`{{`,target:'${'},
-			{origin:`}}`,target:'}'},
-			{origin:`&nbsp;`,target:' '},
-		]
-	};
-	return DOMHtml(dom_tag, dom_attr, dom_html, vueFix);
 }

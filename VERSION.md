@@ -1,5 +1,9 @@
 # JQuery DOM
-- Version: 1.1.1 Build 20240105
+- Version: 1.1.3 Build 20240109
+	- 加入ReactDOMHtml。
+	- 整理项目资源。
+	- 优化vueDOMHtml结构，拆分DOMHtml和VueDOMHtml。
+- Version: 1.1.2 Build 20240105
 	- 加入vueDOMHtml功能。
 - Version: 1.1.1 Build 20240104
 	- 修复数组形式插入DOM时无法插入的bug。
