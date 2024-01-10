@@ -50,6 +50,9 @@ function reactDOMHtml(dom_tag,dom_attr,dom_html,dom_html_after){
 			dom_attr_fix[key_fix]=dom_attr[key];
 		}
 	}
+	if(typeof dom_attr_fix.className==`object` && dom_attr_fix.className.length){
+		dom_attr_fix.className=dom_attr_fix.className.join(` `);
+	}
 	dom_attr=dom_attr_fix;
 
 	//dom子项处理
