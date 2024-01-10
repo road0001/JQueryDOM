@@ -25,10 +25,12 @@ function reactDOMHtml(dom_tag,dom_attr,dom_html,dom_html_after){
 	//dom_tag为对象时，和普通情况一样
 	if(typeof dom_tag==`object` && dom_tag.length==undefined){
 		dom_attr=dom_tag.attr || dom_tag;
-		dom_html=dom_tag.html;
-		dom_html_after=dom_tag.htmlAfter;
 		dom_tag=dom_tag.tag;
 	}
+
+	dom_html=dom_attr.html || dom_html;
+	dom_html_after=dom_attr.htmlAfter || dom_html_after;
+
 	//对attr进行过滤和改名
 	let dom_attr_fix_blacklist=[
 		`tag`,`html`,`htmlAfter`,

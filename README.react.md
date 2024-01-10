@@ -24,7 +24,7 @@
 
 - reactDOMHtml(object)或rDOM(object)。参数结构和JQueryDOM一致。
 
-- 参数为数组时，将返回类似「<><div></div></>」的结构。
+- 参数为数组时，将返回类似「\<\>\<div\>\</div\>\</\>」的结构。
 
 - tag为字符串时，为HTML标签。tag为Function时，为React组件，使用方法和JSX保持一致。
 

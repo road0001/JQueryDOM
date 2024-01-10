@@ -42,9 +42,10 @@ getDOMHtml=DOMHtml=function(dom_tag,dom_attr,dom_html,dom_fix={}){
 	if(typeof dom_tag==`object` && dom_tag.length==undefined){
 		dom_tag=JSON.parse(JSON.stringify(dom_tag));
 		dom_attr=dom_tag.attr || dom_tag;
-		dom_html=dom_attr.html || dom_tag.html;
 		dom_tag=dom_tag.tag;
 	}
+
+	dom_html=dom_attr.html || dom_html;
 
 	let dom_attr_fix_blacklist=[
 		`tag`,`attachType`,
