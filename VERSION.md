@@ -1,4 +1,7 @@
 # JQuery DOM
+- Version: 1.1.4 Build 20240110
+	- 加入构建脚本。
+	- 加入ReactDOMHtml模块导出。
 - Version: 1.1.3 Build 20240109
 	- 加入ReactDOMHtml。
 	- 整理项目资源。

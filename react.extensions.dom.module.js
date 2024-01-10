@@ -1,12 +1,9 @@
+import { createElement } from 'react';
+
 function reactDOMHtml(dom_tag,dom_attr,dom_html,dom_html_after){
-	let rCreateEl;
-	if(typeof createElement==`function`){
-		rCreateEl=createElement;
-	}else if(typeof React==`function` && typeof React.createElement==`function`){
-		rCreateEl=React.createElement;
-	}else{
-		return null;
-	}
+	/** For Module */
+	let rCreateEl=createElement;
+	
 	//dom_tag为数组时，批量为母元素添加元素
 	if(typeof dom_tag==`object` && dom_tag.length!=undefined){
 		let domFullObject=[];
@@ -132,3 +129,5 @@ function reactDOMHtml(dom_tag,dom_attr,dom_html,dom_html_after){
 function rDOM(dom_tag,dom_attr,dom_html,dom_html_after){
 	return reactDOMHtml(dom_tag,dom_attr,dom_html,dom_html_after);
 }
+
+export {reactDOMHtml, rDOM};

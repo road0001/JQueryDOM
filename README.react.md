@@ -8,9 +8,25 @@
 
 ### 注意：
 
-- 需要引入react.extensions.dom.js。
+- HTML中需要引入react.extensions.dom.js。
+
+- 
 
 ### 使用方法：
+
+- 引入ReactDOMHtml
+
+  - ```javascript
+    import { reactDOM, rDOM } from './react.extensions.dom.module';
+    ```
+
+  - HTML开发需要引入react.extensions.dom.min.js。
+
+  - ```html
+    <script src="react.extensions.dom.min.js"></script>
+    ```
+
+
 
 - reactDOMHtml(object)或rDOM(object)。参数结构和JQueryDOM一致。
 

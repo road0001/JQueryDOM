@@ -1,3 +1,4 @@
 *.min.js
 react.html
 react.test.js
+dist/
