@@ -6,12 +6,6 @@
 
 - 使用对象替代JSX，简洁而优雅。
 
-### 注意：
-
-- HTML中需要引入react.extensions.dom.js。
-
-- 
-
 ### 使用方法：
 
 - 引入ReactDOMHtml
