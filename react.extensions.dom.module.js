@@ -15,7 +15,11 @@ function reactDOMHtml(dom_tag,dom_attr,dom_html,dom_html_after){
 				...default_children,
 				...cur,
 			};
-			domFullObject.push(reactDOMHtml(cur,undefined,undefined));
+			if(cur.$$typeof){
+				domFullObject.push(cur); // 已被React.createElement封装的情况下，不再重新封装
+			}else{
+				domFullObject.push(reactDOMHtml(cur,undefined,undefined));
+			}
 		}
 		return rCreateEl(Symbol.for('react.fragment'),null,domFullObject);
 	}
@@ -24,10 +28,13 @@ function reactDOMHtml(dom_tag,dom_attr,dom_html,dom_html_after){
 		dom_attr=dom_tag.attr || dom_tag;
 		dom_tag=dom_tag.tag;
 	}
+	if(dom_attr.$$typeof){
+		return dom_attr; // 已被React.createElement封装的情况下，直接返回此对象
+	}
 
 	dom_html=dom_attr.html || dom_html;
 	dom_html_after=dom_attr.htmlAfter || dom_html_after;
-	
+
 	//对attr进行过滤和改名
 	let dom_attr_fix_blacklist=[
 		`tag`,`html`,`htmlAfter`,

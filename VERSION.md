@@ -1,4 +1,8 @@
 # JQuery DOM
+- Version: 1.1.5 Build 20240112
+	- 更新文档。
+	- 加入NPM模块打包发布脚本。
+	- 修复传入的对象、子项为已被React.createElement封装的对象时报错的bug。
 - Version: 1.1.4 Build 20240110
 	- 加入构建脚本。
 	- 加入ReactDOMHtml模块导出。
