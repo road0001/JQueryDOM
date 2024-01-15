@@ -1,5 +1,5 @@
 @echo off
 cd npm
-npm login
-npm publish
+call npm login
+call npm publish
 pause
