@@ -64,7 +64,7 @@ for(let v of versionSplit){
 		break;
 	}
 }
-//创建package.json
+// 创建package.json
 const packageJson={
 	name: `react-extensions-dom`,
 	version: version,
@@ -84,10 +84,17 @@ const packageJson={
 	},
 	homepage: `https://github.com/road0001/JQueryDOM#readme`,
 }
-//写入package.json
+// 写入package.json
 try{
 	fs.writeFileSync(`npm/package.json`, JSON.stringify(packageJson, null, `\t`), {encoding:`utf-8`});
 	console.log(`Output package.json completed successfully!`);
 }catch(e){
 	console.error(`An error occurred while output the package.json file: ${e}`);
+}
+// 复制README.react.md
+try {
+    fs.copyFileSync(`README.react.md`, `npm/README.md`);
+    console.log(`Copy README.react.md completed successfully!`);
+} catch (err) {
+    console.error(`An error occurred while copy the README.react.md file: ${e}`);
 }
