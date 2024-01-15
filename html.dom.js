@@ -105,7 +105,7 @@ getDOMHtml=DOMHtml=function(dom_tag,dom_attr,dom_html,dom_fix={}){
 	dom_tag=dom_tag.toKebabCase();
 	if(typeof dom_attr==`object`){
 		if(typeof dom_attr.class==`object` && dom_attr.class.length){
-			dom_attr.class=dom_attr.class.join(` `);
+			dom_attr.class=dom_attr.class.join(` `).trim();
 		}
 		if(typeof dom_attr.style==`object`){
 			let styleList=[];

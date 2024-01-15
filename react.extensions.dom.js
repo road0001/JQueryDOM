@@ -7,7 +7,10 @@ function reactDOMHtml(dom_tag,dom_attr,dom_html,dom_html_after){
 	}else{
 		return null;
 	}
+	/* --- FOR MODULE --- */
+	/* --- MODULE BEGIN --- */
 	//dom_tag为数组时，批量为母元素添加元素
+	const _fragment=Symbol.for('react.fragment');
 	if(typeof dom_tag==`object` && dom_tag.length!=undefined){
 		let domFullObject=[];
 		let default_children={
@@ -24,12 +27,20 @@ function reactDOMHtml(dom_tag,dom_attr,dom_html,dom_html_after){
 				domFullObject.push(reactDOMHtml(cur,undefined,undefined));
 			}
 		}
-		return rCreateEl(Symbol.for('react.fragment'),null,domFullObject);
+		return rCreateEl(_fragment,null,domFullObject); //顶层元素类似<></>形式
 	}
 	//dom_tag为对象时，和普通情况一样
 	if(typeof dom_tag==`object` && dom_tag.length==undefined){
 		dom_attr=dom_tag.attr || dom_tag;
 		dom_tag=dom_tag.tag;
+	}
+	if(!dom_tag){
+		dom_tag=_fragment;
+	}
+	if(!dom_attr){
+		dom_attr={};
+	}else if(typeof dom_attr==`string`){ // 例：rDOM(`div`, `This is Div`)
+		dom_attr={html:dom_attr};
 	}
 	if(dom_attr.$$typeof){
 		return dom_attr; // 已被React.createElement封装的情况下，直接返回此对象
@@ -58,7 +69,7 @@ function reactDOMHtml(dom_tag,dom_attr,dom_html,dom_html_after){
 		}
 	}
 	if(typeof dom_attr_fix.className==`object` && dom_attr_fix.className.length){
-		dom_attr_fix.className=dom_attr_fix.className.join(` `);
+		dom_attr_fix.className=dom_attr_fix.className.join(` `).trim();
 	}
 	dom_attr=dom_attr_fix;
 
@@ -144,3 +155,5 @@ function reactDOMHtml(dom_tag,dom_attr,dom_html,dom_html_after){
 function rDOM(dom_tag,dom_attr,dom_html,dom_html_after){
 	return reactDOMHtml(dom_tag,dom_attr,dom_html,dom_html_after);
 }
+/* --- MODULE END --- */
+/* --- FOR MODULE --- */

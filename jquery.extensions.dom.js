@@ -53,7 +53,7 @@ if(typeof jQuery===`function`){
 						//Class数组化处理
 						case `class`:
 							if(typeof cur_dom_attr==`object`){
-								cur_dom_attr=cur_dom_attr.join(` `);
+								cur_dom_attr=cur_dom_attr.join(` `).trim();
 							}
 						break;
 	
