@@ -36,83 +36,83 @@
 
 - 为了方便Vue中Attribute绑定时的变量引用，引用变量可采用如下形式：
 
-	- Text1{{index}}Text2
+    - Text1{{index}}Text2
 
-	- 上述字符串会被自动转换为「\`Text1${index}Text2\`」。
+    - 上述字符串会被自动转换为「\`Text1${index}Text2\`」。
 
-	- 表达式中字符串的部分必须加空格以分隔，如：
+    - 表达式中字符串的部分必须加空格以分隔，如：
 
-		- 「Text1{{index}} == Text2{{index}}」会被转换为：
+        - 「Text1{{index}} == Text2{{index}}」会被转换为：
 
-		- 「\`Text1${index}\` == \`Text2${index}\`」
+        - 「\`Text1${index}\` == \`Text2${index}\`」
 
-		  - 如果不加空格，则：
+          - 如果不加空格，则：
 
-		  - 「Text1{{index}}==Text2{{index}}」会被转换为：
+          - 「Text1{{index}}==Text2{{index}}」会被转换为：
 
-		  - 「\`Text1{{index}}==Text2{{index}}\`」
+          - 「\`Text1{{index}}==Text2{{index}}\`」
 
-	- 使用此特性时，字符串中若需要用到空格，应用「\&nbsp;」替代，如：
-	
-	  - 「Text1\&nbsp;{{index}}」→「\`Text1 ${index}\`」
+    - 使用此特性时，字符串中若需要用到空格，应用「\&nbsp;」替代，如：
+    
+      - 「Text1\&nbsp;{{index}}」→「\`Text1 ${index}\`」
 
-	  - 如果使用空格，则会被格式化成下面的形式：
+      - 如果使用空格，则会被格式化成下面的形式：
 
-	    - 「Text1 {{index}}」→「Text1 \`${index}\`」
+        - 「Text1 {{index}}」→「Text1 \`${index}\`」
 
 - ```javascript
   export default {
-  	props: {
-  		msg: String,
-  		vtdiv: Boolean,
-  		vtshow: Boolean,
-  		vtbu: Boolean,
-  		vtbus: Array,
-  	},
-  	methods: {
-  		vbutest(d) {
-  			console.log(d);
-  		}
-  	},
-  	template: vueDOMHtml(
-  		[
-  			{
-  				tag: `div`,id: `div1`, class: `div`,html: `{{msg}}`,
-  				Vclass: `{vtdiv:vtshow}`, vIf: `vtshow`,
-  				children: [{
-  						tag: `div`,'v-for': `(bu, index) in vtbus`,
-  						children: [{
-  							tag: `button`,
-							class: `vbutton`,
-							html: `{{index}}: {{bu.name}}`,
-  							'vBind:id': `button_{{index}}`,
-							':class': `vtbu`,
-							'v-if': `index % 2 == 0`,
-  							'vOn:click': `
-								vbutest(bu.shit); 
-								this.$parent.vbutest(bu.name)
-							`
-  						}, ]
-  					},
-  					{
-  						tag: `button`,
-						class: `vbutton`,
-						html: `{{index}}: {{bu.name}}`,
-  						Vid: `'button_' + index`,
-						vBindClass: `vtbu`,
-						vFor: `(bu, index) in vtbus`,
-  						vOnClick: `
-							vbutest(bu.shit); 
-							this.$parent.vbutest(bu.name)
-						`
-  					},
-  				]
-  			},
-  			{
-  				tag: `div`,id: `div1`,class: `div`,html: `{{msg}}`,
-  				':class': `vtdiv`,vIf: `vtshow`,
-  			},
-  		]
-  	),
+      props: {
+          msg: String,
+          vtdiv: Boolean,
+          vtshow: Boolean,
+          vtbu: Boolean,
+          vtbus: Array,
+      },
+      methods: {
+          vbutest(d) {
+              console.log(d);
+          }
+      },
+      template: vueDOMHtml(
+          [
+              {
+                  tag: `div`,id: `div1`, class: `div`,html: `{{msg}}`,
+                  Vclass: `{vtdiv:vtshow}`, vIf: `vtshow`,
+                  children: [{
+                          tag: `div`,'v-for': `(bu, index) in vtbus`,
+                          children: [{
+                              tag: `button`,
+                              class: `vbutton`,
+                              html: `{{index}}: {{bu.name}}`,
+                              'vBind:id': `button_{{index}}`,
+                              ':class': `vtbu`,
+                              'v-if': `index % 2 == 0`,
+                              'vOn:click': `
+                                  vbutest(bu.shit); 
+                                  this.$parent.vbutest(bu.name)
+                              `
+                          }, ]
+                      },
+                      {
+                          tag: `button`,
+                          class: `vbutton`,
+                          html: `{{index}}: {{bu.name}}`,
+                          Vid: `'button_' + index`,
+                          vBindClass: `vtbu`,
+                          vFor: `(bu, index) in vtbus`,
+                          vOnClick: `
+                              vbutest(bu.shit); 
+                              this.$parent.vbutest(bu.name)
+                        `
+                      },
+                  ]
+              },
+              {
+                  tag: `div`,id: `div1`,class: `div`,html: `{{msg}}`,
+                  ':class': `vtdiv`,vIf: `vtshow`,
+              },
+          ]
+      ),
   }
   ```

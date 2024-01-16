@@ -68,7 +68,7 @@
 
   - ```javascript
     $(`body`).appendDOM(`div`,{id:`div`,class:[`div1`,`div2`]}, `This is a DIV.`);
-	// <div id="div" class="div1 div2">This is a DIV.</div>
+    // <div id="div" class="div1 div2">This is a DIV.</div>
     ```
 
 - 使用对象传递class
@@ -77,7 +77,7 @@
 
   - ```javascript
     $(`body`).appendDOM(`div`,{id:`div`,class:{div1:true, div2:false, div3:true}}, `This is a DIV.`);
-	// <div id="div" class="div1 div3">This is a DIV.</div>
+    // <div id="div" class="div1 div3">This is a DIV.</div>
     ```
 
 #### 事件绑定
@@ -86,16 +86,16 @@
   $(`body`).appendDOM(`div`,{
   id:`div`,class:`div`,html:`This is a DIV.`
   bind:{
-  	click:{
-  		function(e){
-  			console.log(`click`,e);
-  		}
-  	},
-  	dblclick:{
-  		function(e){
-  			console.log(`dblclick`,e);
-  		}
-  	},
+      click:{
+          function(e){
+              console.log(`click`,e);
+          }
+      },
+      dblclick:{
+          function(e){
+              console.log(`dblclick`,e);
+          }
+      },
   }
   });
   ```
@@ -104,15 +104,15 @@
 
   - ```javascript
     $(`body`).appendDOM(`div`,{
-    	id:`div`,class:[`div`,`div2`],
-    	bind:{
-    		click(e){
-    			console.log(`click`,e);
-    		}
-    		dblclick(e){
-    			console.log(`dblclick`,e);
-    		}
-    	}
+        id:`div`,class:[`div`,`div2`],
+        bind:{
+            click(e){
+                console.log(`click`,e);
+            }
+            dblclick(e){
+                console.log(`dblclick`,e);
+            }
+        }
     },`This is a DIV.`);
     ```
 
@@ -122,11 +122,11 @@
     $(`body`).appendDOM(`div`,{
         id:`div`,class:`div`,html:`This is a DIV.`
         bind:{
-        	click:{
-        		data:{index:1},
-    			function(e){
-    				console.log(e.data.index);
-    			}
+            click:{
+                data:{index:1},
+                function(e){
+                    console.log(e.data.index);
+                }
              }
         }
     });
@@ -217,8 +217,8 @@
       id:`testTable`,class:`testTable`,tr:[
           {id:`tr1`,class:`tr1`,td:[
               {id:`td1`,class:`td1`,children:[
-				{tag:`div`,attr:{id:`tdiv1`,class:`tdiv1`},html:`test td div`},
-			  ]},
+                {tag:`div`,attr:{id:`tdiv1`,class:`tdiv1`},html:`test td div`},
+              ]},
               {html:`test td 2`},
               {html:`test td 3`},
               `test td 4`,
@@ -236,22 +236,22 @@
 - 对象参数写法：
 
   - ```javascript
-  	$(`body`).appendDOM({
-  	    tag:`table`,id:`testTable`,class:`testTable`,tr:[
-  	        {id:`tr1`,class:`tr1`,td:[
-  	            {id:`td1`,class:`td1`,html:`test td 1`},
-  	            {id:`td2`,class:`td2`,html:`test td 2`},
-  	            {html:`test td 3`},
-  	            `test td 4`,
-  	        ]},
-  	        {td:[
-  	            {id:`td1`,class:`td1`,html:`test td 31`},
-  	            {id:`td2`,class:`td2`,html:`test td 32`},
-  	            {html:`test td 33`},
-  	            `test td 34`,
-  	        ]},
-  	    ],
-  	});
+      $(`body`).appendDOM({
+          tag:`table`,id:`testTable`,class:`testTable`,tr:[
+              {id:`tr1`,class:`tr1`,td:[
+                  {id:`td1`,class:`td1`,html:`test td 1`},
+                  {id:`td2`,class:`td2`,html:`test td 2`},
+                  {html:`test td 3`},
+                  `test td 4`,
+              ]},
+              {td:[
+                  {id:`td1`,class:`td1`,html:`test td 31`},
+                  {id:`td2`,class:`td2`,html:`test td 32`},
+                  {html:`test td 33`},
+                  `test td 34`,
+              ]},
+          ],
+      });
 
 ##### 在attributes中使用html字段取代dom_html参数显示文本
 
