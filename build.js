@@ -81,6 +81,7 @@ const packageJson={
 	version: version,
 	description: `A plugin for React, use object instead of JSX to manage React elements.`,
 	main: `index.js`,
+	keywords:[`react`,`extensions`,`dom`,`jsx`],
 	scripts: {
 		test: `echo "Error: no test specified" && exit 1`,
 	},
