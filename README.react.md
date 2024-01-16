@@ -19,34 +19,313 @@
 	- ```javascript
 	  import { reactDOM, rDOM } from react-extensions-dom;
 	  ```
+	- 直接引入模块：
+  
+	  - 将react-extensions-dom-module.js复制到您的项目目录。
+  
+	  - ```javascript
+	    import { reactDOM, rDOM } from './react-extensions-dom-module';
+	    ```
+	
+	- 不使用模块，直接从HTML引入：
+  
+	  - ```html
+	    <script src="react.extensions.dom.min.js"></script>
+	    ```
+	
 
-  - 直接引入模块：
+#### 调用和参数
 
-    - 将react-extensions-dom-module.js复制到您的项目目录。
+- reactDOMHtml(dom_tag, dom_attr, dom_html, dom_html_after)或rDOM(dom_tag, dom_attr, dom_html, dom_html_after)，返回React.createElement对象。
 
-	- ```javascript
-	  import { reactDOM, rDOM } from './react-extensions-dom-module';
-	  ```
+  - ```javascript
+    return reactDOMHtml(`div`,
+        {
+            id:`div`,
+            class:`div`,
+			style:{
+                backgroundColor:`#000`
+            }
+        },
+		`This is a DIV.`
+    );
+    //<div id="div" className="div" style={backgroundColor:`#000`}>This is a DIV.</div>
+    ```
 
-  - 不使用模块，直接从HTML引入：
+- 在dom_attr中，html字段的优先级大于dom_html参数。
 
-	- ```html
-	  <script src="react.extensions.dom.min.js"></script>
-	  ```
+  - ```javascript
+    return reactDOMHtml(`div`,
+        {
+            id:`div`,
+            class:`div`,style:{
+                backgroundColor:`#000`
+            },
+            html:`This is a DIV.`
+        },`This is a DIV 111.`);
+    //<div id="div" className="div" style={{backgroundColor:`#000`}}>This is a DIV.</div>
+    ```
 
-- reactDOMHtml(object)或rDOM(object)。参数结构和JQueryDOM一致。
+- dom_tag参数为对象时，将使用对象中的tag、attr、html构建，dom_attr、dom_html、dom_html_after参数将被忽略。
 
-- 参数为数组时，将返回类似「\<\>\<div\>\</div\>\</\>」的结构。
+  - ```javascript
+    return reactDOMHtml({
+        tag:`div`,attr:{
+            id:`div1`,class:`div1`
+        },html:`This is DIV1.`
+    });
+    //<div id="div1" className="div1">This is a DIV1.</div>
+    ```
 
-- tag为字符串时，为HTML标签。tag为Function时，为React组件，使用方法和JSX保持一致。
+- dom_tag参数为对象时，可省略attr，在同一对象层中写tag、attribute、html，更加简洁易读，因此推荐这种写法。
+
+  - 注意：单层对象写法中，tag、attr为保留字。如果需要使用tag、attr，须更换成tagName、attrName（大小写敏感）。
+
+  - 如果需要使用tagName、attrName，须写成tag_name、attr_name，会被自动转换。
+
+  - ```javascript
+    return reactDOMHtml({
+        tag:`div`,
+		tag_name:`tagName`,
+        id:`div1`,class:`div1`,
+        html:`This is DIV1.`
+    });
+    //<div id="div1" tagName="tagName" className="div1">This is a DIV1.</div>
+    ```
+
+- dom_tag或tag为字符串时，为HTML标签。tag为Function时，为React组件，使用方法和JSX保持一致。
+
+  - ```javascript
+    return reactDOMHtml({
+        tag:Component1,id:`com1`,class:`com1`,html:`Component1`
+    });
+    //<Component1 id="com1" className="com1">Component1</Component1>
+    ```
+
+- dom_attr为字符串时，将返回html字符串。
+
+  - ```javascript
+    return reactDOMHtml(`div`,`This is a DIV.`);
+    //<div>This is a DIV.</div>
+    ```
 
 - props使用attr对象传递，也可以使用单层对象。
 
-- html为特殊的children，仅支持字符串。children支持字符串、对象、数组等任意类型，与JSX保持一致。
+- html、html_after（对象中为htmlAfter）为特殊的children，仅支持字符串。children支持字符串、对象、数组等任意类型，与JSX保持一致。
 
-- 可使用class、for替代className、htmlFor。它们会被自动转换为className、htmlFor，因此在接收prop时必须使用className、htmlFor。
+  - html永远在children之前，html_after永远在children之后。
 
-- 示例如下：
+- dom_tag参数为数组时，将返回JSX中类似「\<\>\<Component1\>\</Component1\>\<Component2\>\</Component2\>...\</\>」的结构，每个元素的结构和上述对象保持一致，dom_attr、dom_html、dom_html_after参数将被忽略。
+
+  - ```javascript
+    return reactDOMHtml([
+        {tag:`div`,id:`div1`,class:`div1`,html:`This is DIV1.`},
+        {tag:`div`,id:`div2`,class:`div2`,html:`This is DIV2.`},
+        {tag:`div`,id:`div3`,class:`div3`,html:`This is DIV3.`},
+    ]);
+    /*
+    <>
+        <div id="div1" className="div1">This is DIV1.</div>
+        <div id="div2" className="div2">This is DIV2.</div>
+        <div id="div3" className="div3">This is DIV3.</div>
+    </>
+    */
+    ```
+
+- 可使用class、for替代className、htmlFor。它们会被自动转换为className、htmlFor，因此在传递prop时必须使用className、htmlFor。
+
+#### 使用数组或对象传递class
+
+- 使用数组传递class
+
+  - 数组中的class会按顺序依次添加到元素的class中。
+
+  - ```javascript
+    return reactDOMHtml({
+        tag:`div`,id:`div`,
+        class:[`div1`,`div2`],
+        html:`This is a DIV.`
+    });
+    //<div id="div" className="div1 div2">This is a DIV.</div>
+    ```
+
+- 使用对象传递class
+
+  - class对象中key对应的value为true时，才会将此key添加到元素的class中。
+
+  - ```javascript
+    return reactDOMHtml({
+	    tag:`div`,id:`div`,
+        class:{
+            div1:true, 
+            div2:false, 
+            div3:true
+        },html:`This is a DIV.`
+    });
+    //<div id="div" className="div1 div3">This is a DIV.</div>
+    ```
+
+#### CSS样式
+
+- 使用JSX标准的CSS格式。
+
+- ```javascript
+  return reactDOMHtml({
+      tag:`div`,
+      id:`div`,
+	  class:[`div`,`div2`],
+      style:{
+          backgrundColor:`#FFF`,
+          opacity:0,
+      },
+      html:`This is a DIV.`
+  });
+  //<div id="div" className="div div2" style={{backgrundColor:`#FFF`,opacity:0,}}>This is a DIV.</div>
+  ```
+
+#### 子元素
+
+- 可以在一个元素中直接插入多个子元素，并且支持多层子元素。
+
+- 如果children为对象，则为单一子元素。如果children为数组，则为多个子元素。
+
+- 子元素的tag、attr、html分别对应dom_tag、dom_attr、dom_html，同样支持上述单层对象写法。
+
+  - ```javascript
+    return reactDOMHtml({
+        tag:`div`,
+        id:`div`,
+		class:[`div`,`div2`],
+		html:`This is a DIV.`
+        children:[
+            {
+                tag:`div`,
+                id:`div_child_1`,
+                class:[`div`, `div_child`],
+				html:`This is a child DIV.`,
+                children:{
+                    tag:`div`,
+                    id:`div_grandson`,
+                    class:[`div`,`div_child`,`div_grandson`],
+                    html:`This is a grandson DIV.`,
+                },
+            },
+            {
+                tag:`div`,
+                attr:{
+                    id:`div_child_2`,class:[`div`,`div_child`],
+                    html:`This is a child DIV.`
+                },
+            }
+        ],
+    });
+    /*
+    <div id="div" className="div div2">
+        This is a DIV.
+        <div id="div_child_1" className="div div_child">
+            This is a child DIV.
+            <div id="div_grandson" className="div div_child div_grandson">
+			    This is a grandson DIV.
+			</div>
+        </div>
+        <div id="div_child_2" className="div div_child">
+            This is a child DIV.
+        </div>
+    </div>
+    */
+    ```
+
+#### 表格元素
+
+- 表格元素拥有特殊的语法，顶层使用tbody或tr取代children，tr中使用td取代children，并且可省略tag。
+
+- 表格只建议使用单层对象写法。
+
+- 可用tbody替代tr。
+
+  - ```javascript
+    return reactDOMHtml({
+        tag:`table`,
+        id:`testTable`,class:`testTable`,tr:[
+            {id:`tr1`,class:`tr1`,td:[
+                {id:`td1`,class:`td1`,html:`test td 1`},
+                {id:`td2`,class:`td2`,html:`test td 2`},
+                {html:`test td 3`},
+                `test td 4`,
+            ]},
+            {td:[
+                {id:`td1`,class:`td1`,html:`test td 31`},
+                {id:`td2`,class:`td2`,html:`test td 32`},
+                {html:`test td 33`},
+                `test td 34`,
+            ]},
+        ],
+    });
+	/*
+	<table id="testTable" className="testTable">
+	    <tbody>
+		    <tr id="tr1" className="tr1">
+			    <td id="td1" className="td1">test td 1</td>
+			    <td id="td2" className="td2">test td 2</td>
+			    <td>test td 3</td>
+			    <td>test td 4</td>
+			</tr>
+		    <tr>
+			    <td id="td1" className="td1">test td 31</td>
+			    <td id="td2" className="td2">test td 32</td>
+			    <td>test td 33</td>
+			    <td>test td 34</td>
+			</tr>
+		</tbody>
+	</table>
+	*/
+    ```
+
+- 注意：td内的元素隐含tag为td，因此不可使用其他tag取代。td内元素应写为如下形式：
+
+  - ```javascript
+    return reactDOMHtml({
+        tag:`table`,
+        id:`testTable`,class:`testTable`,tr:[
+            {id:`tr1`,class:`tr1`,td:[
+                {id:`td1`,class:`td1`,children:[
+    			    {tag:`div`,id:`tdiv1`,class:`tdiv1`,html:`test td div`},
+    		  ]},
+                {html:`test td 2`},
+                {html:`test td 3`},
+                `test td 4`,
+            ]},
+            {td:[
+                {id:`td1`,class:`td1`,html:`test td 31`},
+                {id:`td2`,class:`td2`,html:`test td 32`},
+                {html:`test td 33`},
+                `test td 34`,
+            ]},
+        ],
+    });
+	/*
+	<table id="testTable" className="testTable">
+	    <tbody>
+		    <tr id="tr1" className="tr1">
+			    <td id="td1" clasclassNames="td1">
+					<div id="tdiv1" className="tdiv1">test td div</div>
+				</td>
+			    <td>test td 2</td>
+			    <td>test td 3</td>
+			    <td>test td 4</td>
+			</tr>
+		    <tr>
+			    <td id="td1" className="td1">test td 31</td>
+			    <td id="td2" className="td2">test td 32</td>
+			    <td>test td 33</td>
+			    <td>test td 34</td>
+			</tr>
+		</tbody>
+	</table>
+	*/
+    ```
+
+### 写法和示例
 
 - ```javascript
   function Table({index}){
@@ -120,7 +399,7 @@
   ]}));
   ```
 
-#### React官方文档中井字棋游戏的转制示例：
+#### React官方文档中井字棋游戏的转制示例
 
 ##### index.js
 

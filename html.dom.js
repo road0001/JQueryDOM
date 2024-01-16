@@ -51,7 +51,7 @@ getDOMHtml=DOMHtml=function(dom_tag,dom_attr,dom_html,dom_fix={}){
 		`tag`,`attachType`,
 	]
 	let dom_attr_fix_replace={
-		...{tagName:`tag`, attrName:`attr`},
+		...{tagName:`tag`, attrName:`attr`,tag_name:`tagName`,attr_name:`attrName`,},
 		...dom_fix.attr,
 	}
 	let dom_attr_value_fix_keywords=[
@@ -106,6 +106,14 @@ getDOMHtml=DOMHtml=function(dom_tag,dom_attr,dom_html,dom_fix={}){
 	if(typeof dom_attr==`object`){
 		if(typeof dom_attr.class==`object` && dom_attr.class.length){
 			dom_attr.class=dom_attr.class.join(` `).trim();
+		}else if(typeof dom_attr.class==`object` && dom_attr.class.length==undefined){
+			let classList=[];
+			for(let key in dom_attr.class){
+				if(dom_attr.class[key]==true){
+					classList.push(key);
+				}
+			}
+			dom_attr.class=classList.join(` `).trim();
 		}
 		if(typeof dom_attr.style==`object`){
 			let styleList=[];

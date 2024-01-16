@@ -54,7 +54,7 @@ function reactDOMHtml(dom_tag,dom_attr,dom_html,dom_html_after){
 		`tag`,`html`,`htmlAfter`,
 	]
 	let dom_attr_fix_replace={
-		tagName:`tag`, attrName:`attr`, class:`className`, for:`htmlFor`,
+		tagName:`tag`, attrName:`attr`, tag_name:`tagName`,attr_name:`attrName`, class:`className`, for:`htmlFor`,
 	}
 	let dom_attr_fix={};
 	for(let key in dom_attr){
@@ -70,6 +70,14 @@ function reactDOMHtml(dom_tag,dom_attr,dom_html,dom_html_after){
 	}
 	if(typeof dom_attr_fix.className==`object` && dom_attr_fix.className.length){
 		dom_attr_fix.className=dom_attr_fix.className.join(` `).trim();
+	}else if(typeof dom_attr_fix.className==`object` && dom_attr_fix.className.length==undefined){
+		let classList=[];
+		for(let key in dom_attr_fix.className){
+			if(dom_attr_fix.className[key]==true){
+				classList.push(key);
+			}
+		}
+		dom_attr_fix.className=classList.join(` `).trim();
 	}
 	dom_attr=dom_attr_fix;
 

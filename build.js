@@ -11,6 +11,27 @@ try{
 	fs.mkdirSync(`npm`);
 }catch(e){}
 
+// 读取VERSION.md获取版本号
+let versionMd=fs.readFileSync(`VERSION.md`,`utf-8`);
+let versionSplit=versionMd.split(`\n`);
+let version=``;
+for(let v of versionSplit){
+	if(v.includes(`Version: `)){
+		version=v.split(` `)[2];
+		break;
+	}
+}
+console.log(`Build version: ${version}`);
+// 读取npm/package.json
+let packageData={};
+try{
+	packageData=JSON.parse(fs.readFileSync(`npm/package.json`,`utf-8`));
+}catch(e){}
+if(version == packageData.version){
+	console.warn(`Version ${version} is same as package.json!`);
+}
+
+
 // 压缩非模块脚本
 const uglifyList=[
 	`jquery.extensions.dom`,
@@ -54,16 +75,6 @@ for(let m of moduleList){
 }
 
 // 创建NPM包
-// 读取VERSION.md获取版本号
-let versionMd=fs.readFileSync(`VERSION.md`,`utf-8`);
-let versionSplit=versionMd.split(`\n`);
-let version=``;
-for(let v of versionSplit){
-	if(v.includes(`Version: `)){
-		version=v.split(` `)[2];
-		break;
-	}
-}
 // 创建package.json
 const packageJson={
 	name: `react-extensions-dom`,
@@ -98,3 +109,4 @@ try {
 } catch (err) {
     console.error(`An error occurred while copy the README.react.md file: ${e}`);
 }
+console.log(`Build completed!`);

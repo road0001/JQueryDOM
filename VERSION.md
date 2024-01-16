@@ -1,5 +1,10 @@
 # JQuery DOM
 
+- Version: 1.1.7 Build 20240116
+	- 加入对象传递class功能。
+	- 加入tag_name、attr_name自动转换为tagName、attrName功能。
+	- 优化文档和构建脚本。
+
 - Version: 1.1.6 Build 20240115
 	- 优化构建脚本。
 	- 加入自动移除class前后空格功能。

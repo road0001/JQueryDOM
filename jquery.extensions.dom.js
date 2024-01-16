@@ -52,8 +52,16 @@ if(typeof jQuery===`function`){
 					switch(key){
 						//Class数组化处理
 						case `class`:
-							if(typeof cur_dom_attr==`object`){
+							if(typeof cur_dom_attr==`object` && cur_dom_attr.length){
 								cur_dom_attr=cur_dom_attr.join(` `).trim();
+							}else if(typeof cur_dom_attr==`object` && cur_dom_attr.length==undefined){
+								let classList=[];
+								for(let key in cur_dom_attr){
+									if(cur_dom_attr[key]==true){
+										classList.push(key);
+									}
+								}
+								cur_dom_attr=classList.join(` `).trim();
 							}
 						break;
 	
@@ -97,7 +105,7 @@ if(typeof jQuery===`function`){
 				`tag`,`attachType`,
 			]
 			let dom_attr_fix_replace={
-				tagName:`tag`, attrName:`attr`,
+				tagName:`tag`, attrName:`attr`,tag_name:`tagName`,attr_name:`attrName`,
 			}
 			let dom_attr_fix={};
 			if(dom_tag.attr==undefined){

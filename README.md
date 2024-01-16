@@ -64,8 +64,20 @@
 
 - 使用数组传递class
 
+  - 数组中的class会按顺序依次添加到元素的class中。
+
   - ```javascript
     $(`body`).appendDOM(`div`,{id:`div`,class:[`div1`,`div2`]}, `This is a DIV.`);
+	// <div id="div" class="div1 div2">This is a DIV.</div>
+    ```
+
+- 使用对象传递class
+
+  - class对象中key对应的value为true时，才会将此key添加到元素的class中。
+
+  - ```javascript
+    $(`body`).appendDOM(`div`,{id:`div`,class:{div1:true, div2:false, div3:true}}, `This is a DIV.`);
+	// <div id="div" class="div1 div3">This is a DIV.</div>
     ```
 
 #### 事件绑定
@@ -332,7 +344,7 @@
 
 - 如果需要在attribute中使用tag、attr，须更换成tagName、attrName（大小写敏感）。
 
-- 如果需要在attribute中使用tagname、attrname、attachtype，须全部使用小写。
+- 如果需要在attribute中使用tagName、attrName，须使用tag_name、attr_name，会被自动转换。
 
   - ```javascript
     $(`body`).appendDOM({
