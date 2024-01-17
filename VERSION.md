@@ -1,5 +1,8 @@
 # JQuery DOM
 
+- Version: 1.1.8 Build 20240117
+	- 修复在直接引入ReactDOMHtml会报错的bug。
+
 - Version: 1.1.7 Build 20240116
 	- 加入对象传递class功能。
 	- 加入tag_name、attr_name自动转换为tagName、attrName功能。

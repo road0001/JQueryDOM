@@ -2,7 +2,7 @@ function reactDOMHtml(dom_tag,dom_attr,dom_html,dom_html_after){
 	let rCreateEl;
 	if(typeof createElement==`function`){
 		rCreateEl=createElement;
-	}else if(typeof React==`function` && typeof React.createElement==`function`){
+	}else if(typeof React==`object` && typeof React.createElement==`function`){
 		rCreateEl=React.createElement;
 	}else{
 		return null;
