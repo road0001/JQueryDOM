@@ -1,5 +1,8 @@
 # JQuery DOM
 
+- Version: 1.1.9 Build 20240118
+	- 修复限制只有一个children时，无法被部分插件识别的bug。
+
 - Version: 1.1.8 Build 20240117
 	- 修复在直接引入ReactDOMHtml会报错的bug。
 

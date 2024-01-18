@@ -157,6 +157,8 @@ function reactDOMHtml(dom_tag,dom_attr,dom_html,dom_html_after){
 	}
 	if(reactDOMChildren.length<=0){
 		reactDOMChildren=null;
+	}else if(reactDOMChildren.length==1){ //只有单一子项时，直接指向，以避免兼容性问题。
+		reactDOMChildren=reactDOMChildren[0];
 	}
 	return rCreateEl(dom_tag,dom_attr,reactDOMChildren);
 }
