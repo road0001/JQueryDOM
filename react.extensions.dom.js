@@ -17,13 +17,13 @@ function reactDOMHtml(dom_tag,dom_attr,dom_html,dom_html_after){
 			tag:undefined,attr:undefined,html:undefined,
 		};
 		for(let cur of dom_tag){
-			cur={
-				...default_children,
-				...cur,
-			};
-			if(cur.$$typeof){
+			if(typeof cur==`object` && cur.$$typeof){
 				domFullObject.push(cur); // 已被React.createElement封装的情况下，不再重新封装
-			}else{
+			}else if(cur && typeof cur==`object`){
+				cur={
+					...default_children,
+					...cur,
+				};
 				domFullObject.push(reactDOMHtml(cur,undefined,undefined));
 			}
 		}
@@ -122,34 +122,38 @@ function reactDOMHtml(dom_tag,dom_attr,dom_html,dom_html_after){
 	//表格语法糖
 	if(typeof dom_attr==`object` && (typeof dom_attr.tbody==`object` || typeof dom_attr.tr==`object`)){
 		let reactDOMTbody={tag:`tbody`,children:[]};
-		let default_tr={
-			tag:`tr`,attr:undefined,html:undefined,children:[],
-		};
-		let default_td={
-			tag:`td`,attr:undefined,html:undefined,children:[],
-		}
 		let trList=dom_attr.tbody || dom_attr.tr;
 		for(let i=0; i<trList.length; i++){
+			let default_tr={
+				tag:`tr`,attr:undefined,html:undefined,children:[],
+			};
+			let default_td={
+				tag:`td`,attr:undefined,html:undefined,children:[],
+			}
 			let curTr=trList[i];
-			let tr={
-				...default_tr,
-				...curTr
-			}
-			for(let j=0; j<curTr.td.length; j++){
-				let curTd=curTr.td[j];
-				if(typeof curTd==`string`){
-					curTd={html:curTd};
+			if(curTr){
+				let tr={
+					...default_tr,
+					...curTr
 				}
-				let td={
-					...default_td,
-					...curTd,
+				if(curTr.td){
+					for(let j=0; j<curTr.td.length; j++){
+						let curTd=curTr.td[j];
+						if(typeof curTd==`string`){
+							curTd={html:curTd};
+						}
+						let td={
+							...default_td,
+							...curTd,
+						}
+						delete td.td;
+						tr.children.push(td);
+					}
 				}
-				delete td.td;
-				tr.children.push(td);
+				delete tr.tr;
+				delete tr.td;
+				reactDOMTbody.children.push(tr);
 			}
-			delete tr.tr;
-			delete tr.td;
-			reactDOMTbody.children.push(tr);
 		}
 		delete dom_attr.tr;
 		delete dom_attr.tbody;

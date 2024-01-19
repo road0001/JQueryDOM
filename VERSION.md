@@ -1,5 +1,9 @@
 # JQuery DOM
 
+- Version: 1.1.10 Build 20240119
+	- 修复表格重复输出的bug。
+	- 修复Invalid prop `attr`警告。
+
 - Version: 1.1.9 Build 20240118
 	- 修复限制只有一个children时，无法被部分插件识别的bug。
 
