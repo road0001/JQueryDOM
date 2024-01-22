@@ -1,5 +1,8 @@
 # JQuery DOM
 
+- Version: 1.1.11 Build 20240122
+	- 加入Model双向绑定结构。
+
 - Version: 1.1.10 Build 20240119
 	- 修复表格重复输出的bug。
 	- 修复Invalid prop `attr`警告。

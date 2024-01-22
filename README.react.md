@@ -1,3 +1,5 @@
+
+
 # DOMHtml for React
 
 ## React的插件，使用对象替代JSX来管理React元素。
@@ -163,6 +165,59 @@
         },html:`This is a DIV.`
     });
     //<div id="div" className="div1 div3">This is a DIV.</div>
+    ```
+
+#### 双向绑定
+
+- 使用model传递state和onChange的handle函数，从而更加方便地实现双向绑定。
+
+  - model为数组时，model[0]为value，model[model.length-1]为handle函数，model[1]～model[model.length-1]为扩展数据（如radio的默认选中值）。
+
+  - model为对象时，将在dom_attr中解构，因此其内部字段与dom_attr保持一致。
+
+  - 在model中，checkbox的checked属性将被自动映射为model[0]:boolean。
+
+  - 组件使用model时，需要接收value、onChange两个props。
+
+    - ```javascript
+        function ModelRoot(){
+              const radioList=[
+                `test1`,`test2`,`test3`,
+            ];
+            const [input, setInput]=useState(``);
+            const [text, setText]=useState(``);
+            const [check, setCheck]=useState(false);
+            const [radio, setRadio]=useState(radioList[1]);
+        
+              function inputChange(e){
+                setInput(e.target.value);
+            }
+              function textChange(e){
+                setText(e.target.value);
+            }
+              function checkChange(e){
+                setCheck(e.target.checked);
+            }
+              function changeRadio(e){
+                setRadio(e.target.value);
+            }
+              return rDOM([
+                {tag:`input`, model:[input, inputChange]},
+                {tag:`textarea`, model:[text, textChange]},
+                {tag:`input`, type:`checkbox`, model:[check, checkChange]},
+                  {tag:`input`, type:`checkbox`, checked:check, onChange:checkChange},
+                  // 以上两个checkbox项的意义完全一致。
+                  ...radioList.map((r,i)=>({tag:`input`, type:`radio`, model:[r, r==radio, changeRadio], title:r})),
+                  ...radioList.map((r,i)=>({tag:`input`, type:`radio`, model:{value:r, checked:r==radio, onChange:changeRadio}, title:r})),
+                  ...radioList.map((r,i)=>({tag:`input`, type:`radio`, model:[r, changeRadio], checked:r==radio, title:r})),
+                  ...radioList.map((r,i)=>({tag:`input`, type:`radio`, value:r, onChange:changeRadio, checked:r==radio, title:r})),
+                // 以上四个radio项的意义完全一致。
+                {tag:ModelComponent, model:[input, inputChange]},
+            ]);
+        }
+        function ModelComponent({value, onChange}){
+            // 组件相关代码
+        }
     ```
 
 #### CSS样式

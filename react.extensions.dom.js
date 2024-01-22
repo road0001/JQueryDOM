@@ -46,15 +46,50 @@ function reactDOMHtml(dom_tag,dom_attr,dom_html,dom_html_after){
 		return dom_attr; // 已被React.createElement封装的情况下，直接返回此对象
 	}
 
+	//Model双向绑定
+	if(typeof dom_attr.model==`object`){
+		let modelObject={};
+		if(dom_attr.model.length!=undefined && dom_attr.model.length>=2 && typeof dom_attr.model[dom_attr.model.length-1]==`function`){
+			// model:[value, extend, onChange]
+			modelObject.value=dom_attr.model[0];
+			modelObject.extend=dom_attr.model.slice(1,dom_attr.model.length-1);
+			modelObject.onChange=dom_attr.model[dom_attr.model.length-1];
+		}else{
+			modelObject=dom_attr.model;
+		}
+
+		if(dom_tag==`input` && dom_attr.type!=undefined){
+			switch(dom_attr.type){
+				case `checkbox`:
+					dom_attr.checked=modelObject.value;
+					delete modelObject.value;
+				break;
+				case `radio`:
+					dom_attr.value=modelObject.value;
+					if(typeof modelObject.extend==`object` && modelObject.extend.length>0){
+						dom_attr.checked=modelObject.extend[0];
+						delete modelObject.extend;
+					}else if(modelObject.checked!=undefined){
+						dom_attr.checked=modelObject.checked;
+						delete modelObject.checked;
+					}
+				break;
+			}
+		}
+		dom_attr={...dom_attr, ...modelObject};
+	}
+
 	dom_html=dom_attr.html || dom_html;
 	dom_html_after=dom_attr.htmlAfter || dom_html_after;
 
 	//对attr进行过滤和改名
 	let dom_attr_fix_blacklist=[
-		`tag`,`html`,`htmlAfter`,
+		`tag`,`html`,`htmlAfter`,`model`,
 	]
 	let dom_attr_fix_replace={
-		tagName:`tag`, attrName:`attr`, tag_name:`tagName`,attr_name:`attrName`, class:`className`, for:`htmlFor`,
+		tagName:`tag`, attrName:`attr`, modelName:`model`, 
+		tag_name:`tagName`,attr_name:`attrName`, model_name:`modelName`, 
+		class:`className`, for:`htmlFor`,
 	}
 	let dom_attr_fix={};
 	for(let key in dom_attr){
