@@ -104,18 +104,19 @@ if(typeof jQuery===`function`){
 			let dom_attr_fix_blacklist=[
 				`tag`,`attachType`,
 			]
-			let dom_attr_fix_replace={
-				tagName:`tag`, attrName:`attr`,tag_name:`tagName`,attr_name:`attrName`,
-			}
+			let dom_attr_fix_replace=new Map([
+				[`tagName`,`tag`],[`tag_name`,`tagName`],
+				[`attrName`,`attr`],[`attr_name`,`attrName`],
+			]);
 			let dom_attr_fix={};
 			if(dom_tag.attr==undefined){
 				for(let key in dom_tag){
 					if(!dom_attr_fix_blacklist.includes(key)){
 						let key_fix=key;
-						for(let origin in dom_attr_fix_replace){
-							key_fix=key_fix.replace(origin,dom_attr_fix_replace[origin]);
+						if(dom_attr_fix_replace.get(key)){
+							key_fix=dom_attr_fix_replace.get(key_fix);
 						}
-						dom_attr_fix[key_fix]=dom_tag[key];
+						dom_attr_fix[key_fix]=dom_attr[key];
 					}
 				}
 			}

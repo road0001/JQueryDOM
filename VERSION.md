@@ -1,5 +1,10 @@
 # JQuery DOM
 
+- Version: 1.1.12 Build 20240124
+	- 优化dom_attr的处理逻辑和性能。
+	- 优化dom_attr传入规则，防止传入无效字段。
+	- 优化Model双向绑定结构，去除不必要的字段。
+
 - Version: 1.1.11 Build 20240122
 	- 加入Model双向绑定结构。
 

@@ -171,13 +171,13 @@
 
 - 使用model传递state和onChange的handle函数，从而更加方便地实现双向绑定。
 
-  - model为数组时，model[0]为value，model[model.length-1]为handle函数，model[1]～model[model.length-1]为扩展数据（如radio的默认选中值）。
+  - model为数组时，model[0]为value，model[model.length-1]为handle函数，model[1]～model[model.length-1]为扩展数据（如radio的默认选中值）。一般为[value, onChange]格式。
 
   - model为对象时，将在dom_attr中解构，因此其内部字段与dom_attr保持一致。
 
   - 在model中，checkbox的checked属性将被自动映射为model[0]:boolean。
 
-  - 组件使用model时，需要接收value、onChange两个props。
+  - 组件使用model时，需要接收value、onChange两个props，如果有扩展数据，则按顺序写入extend prop中。
 
     - ```javascript
         function ModelRoot(){
@@ -212,11 +212,12 @@
                   ...radioList.map((r,i)=>({tag:`input`, type:`radio`, model:[r, changeRadio], checked:r==radio, title:r})),
                   ...radioList.map((r,i)=>({tag:`input`, type:`radio`, value:r, onChange:changeRadio, checked:r==radio, title:r})),
                 // 以上四个radio项的意义完全一致。
-                {tag:ModelComponent, model:[input, inputChange]},
+                {tag:ModelComponent, model:[input, extend1, extend2, inputChange]},
             ]);
         }
-        function ModelComponent({value, onChange}){
+        function ModelComponent({value, onChange, extend}){
             // 组件相关代码
+			//上述组件传入的props：value=input, onChange=inputChange, extend=[extend1, extend2]
         }
     ```
 
@@ -245,6 +246,8 @@
 - 如果children为对象，则为单一子元素。如果children为数组，则为多个子元素。
 
 - 子元素的tag、attr、html分别对应dom_tag、dom_attr、dom_html，同样支持上述单层对象写法。
+
+- 如果没有为子元素指定key，则默认传入index作为key。
 
   - ```javascript
     return reactDOMHtml({

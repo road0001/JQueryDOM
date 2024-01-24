@@ -16,7 +16,7 @@ function reactDOMHtml(dom_tag,dom_attr,dom_html,dom_html_after){
 		let default_children={
 			tag:undefined,attr:undefined,html:undefined,
 		};
-		for(let cur of dom_tag){
+		for(let [index, cur] of dom_tag.entries()){
 			if(typeof cur==`object` && cur.$$typeof){
 				domFullObject.push(cur); // 已被React.createElement封装的情况下，不再重新封装
 			}else if(cur && typeof cur==`object`){
@@ -54,6 +54,10 @@ function reactDOMHtml(dom_tag,dom_attr,dom_html,dom_html_after){
 			modelObject.value=dom_attr.model[0];
 			modelObject.extend=dom_attr.model.slice(1,dom_attr.model.length-1);
 			modelObject.onChange=dom_attr.model[dom_attr.model.length-1];
+
+			if(modelObject.extend.length<=0){
+				delete modelObject.extend;
+			}
 		}else{
 			modelObject=dom_attr.model;
 		}
@@ -66,7 +70,7 @@ function reactDOMHtml(dom_tag,dom_attr,dom_html,dom_html_after){
 				break;
 				case `radio`:
 					dom_attr.value=modelObject.value;
-					if(typeof modelObject.extend==`object` && modelObject.extend.length>0){
+					if(typeof modelObject.extend==`object` && modelObject.extend.length>0){ //处理默认选项
 						dom_attr.checked=modelObject.extend[0];
 						delete modelObject.extend;
 					}else if(modelObject.checked!=undefined){
@@ -86,19 +90,18 @@ function reactDOMHtml(dom_tag,dom_attr,dom_html,dom_html_after){
 	let dom_attr_fix_blacklist=[
 		`tag`,`html`,`htmlAfter`,`model`,
 	]
-	let dom_attr_fix_replace={
-		tagName:`tag`, attrName:`attr`, modelName:`model`, 
-		tag_name:`tagName`,attr_name:`attrName`, model_name:`modelName`, 
-		class:`className`, for:`htmlFor`,
-	}
+	let dom_attr_fix_replace=new Map([
+		[`tagName`,`tag`],[`tag_name`,`tagName`],
+		[`attrName`,`attr`],[`attr_name`,`attrName`],
+		[`modelName`,`model`],[`model_name`,`modelName`],
+		[`class`,`className`],[`for`,`htmlFor`],
+	]);
 	let dom_attr_fix={};
 	for(let key in dom_attr){
-		if(!dom_attr_fix_blacklist.includes(key)){
+		if(!dom_attr_fix_blacklist.includes(key) && dom_attr[key]!=undefined){
 			let key_fix=key;
-			for(let origin in dom_attr_fix_replace){
-				if(origin == key_fix){
-					key_fix=key_fix.replace(origin,dom_attr_fix_replace[origin]);
-				}
+			if(dom_attr_fix_replace.get(key)){
+				key_fix=dom_attr_fix_replace.get(key_fix);
 			}
 			dom_attr_fix[key_fix]=dom_attr[key];
 		}
@@ -143,7 +146,7 @@ function reactDOMHtml(dom_tag,dom_attr,dom_html,dom_html_after){
 	if(dom_html){
 		reactDOMChildren.push(dom_html);
 	}
-	for(let children of dom_children){
+	for(let [index, children] of dom_children.entries()){
 		if(typeof children==`object`){
 			reactDOMChildren.push(reactDOMHtml(children));
 		}else if(typeof children==`string`){
