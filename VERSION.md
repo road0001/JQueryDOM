@@ -1,5 +1,8 @@
 # JQuery DOM
 
+- Version: 1.1.13 Build 20240314
+	- 调整jQueryDOM数组形式插入元素的方式，prepend和before倒转数组以确保插入顺序和数组顺序一致。
+
 - Version: 1.1.12 Build 20240124
 	- 优化dom_attr的处理逻辑和性能。
 	- 优化dom_attr传入规则，防止传入无效字段。
