@@ -1,5 +1,8 @@
 # JQuery DOM
 
+- Version: 1.1.14 Build 20240315
+	- 修复数组形式插入顺序错误的bug。
+
 - Version: 1.1.13 Build 20240314
 	- 调整jQueryDOM数组形式插入元素的方式，prepend和before倒转数组以确保插入顺序和数组顺序一致。
 

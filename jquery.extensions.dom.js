@@ -279,8 +279,8 @@ if(typeof jQuery===`function`){
 			let default_children={
 				tag:undefined,attr:undefined,html:undefined,attachType:`append`
 			};
-			if(attach_type==`prepend` || attach_type==`before`){
-				//往前插入时，将数组调转，以确保插入顺序和数组顺序一致
+			if(attach_type==`append` || attach_type==`after`){
+				//往插入时，将数组调转，以确保插入顺序和数组顺序一致
 				dom_tag.reverse();
 			}
 			for(let cur of dom_tag){
