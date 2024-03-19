@@ -116,7 +116,7 @@ if(typeof jQuery===`function`){
 						if(dom_attr_fix_replace.get(key)){
 							key_fix=dom_attr_fix_replace.get(key_fix);
 						}
-						dom_attr_fix[key_fix]=dom_attr[key];
+						dom_attr_fix[key_fix]=dom_tag[key];
 					}
 				}
 			}
